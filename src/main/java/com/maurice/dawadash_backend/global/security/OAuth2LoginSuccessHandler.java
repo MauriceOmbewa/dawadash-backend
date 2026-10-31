@@ -1,0 +1,25 @@
+package com.maurice.dawadash_backend.global.security;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+
+/** After a successful login, send the browser back to the Angular app. Angular picks the page from the user's roles. */
+@Component
+public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
+
+    @Value("${app.frontend-url}")
+    private String frontendUrl;
+
+    @Override
+    public void onAuthenticationSuccess(HttpServletRequest request,
+                                        HttpServletResponse response,
+                                        Authentication authentication) throws IOException {
+        response.sendRedirect(frontendUrl + "/");
+    }
+}
